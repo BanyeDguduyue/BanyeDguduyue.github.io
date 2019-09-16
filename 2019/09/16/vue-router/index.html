@@ -11,7 +11,8 @@
     <meta name="google" content="notranslate">
     <meta name="keywords" content="Fechin,"> 
     <meta name="description" content="个人博客,vue-router的使用方法首先定义子组件如下官网的例子
-12const foo = `&amp;lt;div&amp;gt;foo&amp;lt;/div&amp;gt;`const bar = `&amp;lt;div&amp;gt;bar,"> 
+  const foo = `&amp;lt;div&amp;gt;foo&amp;lt;/div&amp;gt;`
+  const bar = `&amp;lt;div&amp;gt;,"> 
     <meta name="author" content="半夜的孤独月"> 
     <link rel="alternative" href="atom.xml" title="半夜的孤独月" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -64,17 +65,63 @@
         </div>
         <div class="content markdown">
             <h1 id="vue-router的使用方法"><a href="#vue-router的使用方法" class="headerlink" title="vue-router的使用方法"></a>vue-router的使用方法</h1><p>首先定义子组件如下官网的例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const foo = `&lt;div&gt;foo&lt;/div&gt;`</span><br><span class="line">const bar = `&lt;div&gt;bar&lt;/div&gt;`</span><br></pre></td></tr></table></figure>
+<pre><code>  const foo = `&lt;div&gt;foo&lt;/div&gt;`
+  const bar = `&lt;div&gt;bar&lt;/div&gt;`</code></pre><p>再创建router实例</p>
+<pre><code class="javascript">// 实例VueRouter的参数是一个数组，数组内是对象，对象的参数有path和component还有一个参数是children是嵌套路由所需要的值
+const routes = [
+  {
+    path: &#39;/foo&#39;,
+    component: Foo
+  },
+  {
+    path: &#39;/bar&#39;,
+    component: Bar
+  }
+]
 
-<p>再创建router实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 实例VueRouter的参数是一个数组，数组内是对象，对象的参数有path和component还有一个参数是children是嵌套路由所需要的值</span><br><span class="line">const routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &apos;/foo&apos;,</span><br><span class="line">    component: Foo</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path: &apos;/bar&apos;,</span><br><span class="line">    component: Bar</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  routes // (缩写) 相当于 routes: routes （es6写法）</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
+const router = new VueRouter({
+  routes // (缩写) 相当于 routes: routes （es6写法）
+})</code></pre>
 <p>挂载到Vue的实例上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new Vue(&#123;</span><br><span class="line">  el:&apos;#app&apos;,</span><br><span class="line">  router</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
+<pre><code class="javascript">new Vue({
+  el:&#39;#app&#39;,
+  router
+})</code></pre>
 <p>html：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 加入了动画效果 --&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.fade-enter-active,</span><br><span class="line">.fade-leave-active &#123;</span><br><span class="line">  transition: all .5s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.fade-enter,</span><br><span class="line">.fade-leave-to&#123;</span><br><span class="line">  opacity: 0;</span><br><span class="line">  transform: translateX(20%)</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;h1&gt;哎哟不错哦&lt;/h1&gt;</span><br><span class="line">  &lt;p&gt;</span><br><span class="line">    &lt;!-- 使用 router-link 组件来导航. --&gt;</span><br><span class="line">    &lt;!-- 通过传入 `to` 属性指定链接. --&gt;</span><br><span class="line">    &lt;!-- &lt;router-link&gt; 默认会被渲染成一个 `&lt;a&gt;` 标签 --&gt;</span><br><span class="line">    &lt;router-link to=&quot;/foo&quot;&gt;Go to Foo&lt;/router-link&gt;</span><br><span class="line">    &lt;router-link to=&quot;/bar&quot;&gt;Go to Bar&lt;/router-link&gt;</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">  &lt;!-- 路由出口 --&gt;</span><br><span class="line">  &lt;!-- 路由匹配到的组件将渲染在这里 --&gt;</span><br><span class="line">  &lt;!-- 加入动画效果 --&gt;</span><br><span class="line">  &lt;transition name=&apos;fade&apos; mode=&quot;out-in&quot;&gt;</span><br><span class="line">    &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">  &lt;/transition&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">// 引入vue和vue-router包</span><br><span class="line">&lt;script src=&quot;https://unpkg.com/vue/dist/vue.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;https://unpkg.com/vue-router/dist/vue-router.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;!-- 加入了动画效果 --&gt;
+&lt;style&gt;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .5s;
+}
 
+.fade-enter,
+.fade-leave-to{
+  opacity: 0;
+  transform: translateX(20%)
+}
+&lt;/style&gt;
+
+&lt;div id=&quot;app&quot;&gt;
+  &lt;h1&gt;哎哟不错哦&lt;/h1&gt;
+  &lt;p&gt;
+    &lt;!-- 使用 router-link 组件来导航. --&gt;
+    &lt;!-- 通过传入 `to` 属性指定链接. --&gt;
+    &lt;!-- &lt;router-link&gt; 默认会被渲染成一个 `&lt;a&gt;` 标签 --&gt;
+    &lt;router-link to=&quot;/foo&quot;&gt;Go to Foo&lt;/router-link&gt;
+    &lt;router-link to=&quot;/bar&quot;&gt;Go to Bar&lt;/router-link&gt;
+  &lt;/p&gt;
+  &lt;!-- 路由出口 --&gt;
+  &lt;!-- 路由匹配到的组件将渲染在这里 --&gt;
+  &lt;!-- 加入动画效果 --&gt;
+  &lt;transition name=&#39;fade&#39; mode=&quot;out-in&quot;&gt;
+    &lt;router-view&gt;&lt;/router-view&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;
+
+// 引入vue和vue-router包
+&lt;script src=&quot;https://unpkg.com/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/vue-router/dist/vue-router.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>效果图：<br><img src="./0.gif" alt="alt 效果图" title="效果图"></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
@@ -119,6 +166,9 @@
 <script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/highlightjs/styles/androidstudio.css">
+<script src="/highlightjs/highlight.pack.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <link rel="stylesheet" href="/photoswipe/photoswipe.css">
 <link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
 <script src="/photoswipe/photoswipe.min.js"></script>
@@ -171,6 +221,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+  
 
 
 

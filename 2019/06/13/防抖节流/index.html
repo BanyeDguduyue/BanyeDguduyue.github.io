@@ -66,18 +66,77 @@
             <h1 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h1><h2 id="什么是防抖？"><a href="#什么是防抖？" class="headerlink" title="什么是防抖？"></a>什么是防抖？</h2><p>所谓防抖就是防止页面抖动，由于一些方法的无休止的调用使得浏览器的性能损耗，导致页面出现卡顿现象。</p>
 <p>要解决防抖就是要控制住函数的调用 如：scroll事件的产生调用某一个方法就会产生性能损耗。 </p>
 <p>怎么防抖，就是做了很多重复的事情我只做一次。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function debounce(fn, wait) &#123;</span><br><span class="line">    let timeout = null;      //定义一个定时器</span><br><span class="line">    return function() &#123;</span><br><span class="line">        if(timeout !== null) </span><br><span class="line">          clearTimeout(timeout);  //清除这个定时器</span><br><span class="line">        timeout = setTimeout(fn, wait);  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 处理函数</span><br><span class="line">function handle() &#123;</span><br><span class="line">    console.log(&apos;孤独月&apos;); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 滚动事件</span><br><span class="line">window.addEventListener(&apos;scroll&apos;, debounce(handle, 1000));</span><br></pre></td></tr></table></figure>
+<pre><code>function debounce(fn, wait) {
+    let timeout = null;      //定义一个定时器
+    return function() {
+        if(timeout !== null) 
+          clearTimeout(timeout);  //清除这个定时器
+        timeout = setTimeout(fn, wait);  
+    }
+}
 
-<p>代码如上，我一直滚动但是我就只执行一次，debounce是个闭包，只要timeout不等于null，一直触发scroll就不会执行handle方法，因为定时器一直在清除又启动，只有当你停止滚动1000ms后才会调用一次<br><img src="./0.gif" alt="alt 防抖效果图" title="防抖效果图"></p>
+// 处理函数
+function handle() {
+    console.log(&#39;孤独月&#39;); 
+}
+
+// 滚动事件
+window.addEventListener(&#39;scroll&#39;, debounce(handle, 1000));
+</code></pre><p>代码如上，我一直滚动但是我就只执行一次，debounce是个闭包，只要timeout不等于null，一直触发scroll就不会执行handle方法，因为定时器一直在清除又启动，只有当你停止滚动1000ms后才会调用一次<br><img src="./0.gif" alt="alt 防抖效果图" title="防抖效果图"></p>
 <h1 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h1><h2 id="什么是节流？"><a href="#什么是节流？" class="headerlink" title="什么是节流？"></a>什么是节流？</h2><p>节流相当于开水龙头，水大了关小，一段时间执行一次，持续触发scroll事件时，并不立即执行handle函数，每隔1000毫秒才会执行一次handle函数。<br>有两种方法进行节流  </p>
-<h3 id="①时间戳"><a href="#①时间戳" class="headerlink" title="①时间戳"></a>①时间戳</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const throttle = function(func, delay) &#123;            </span><br><span class="line">　　let prev = Date.now();            </span><br><span class="line">　　return function() &#123;                                </span><br><span class="line">　　　　const now = Date.now();  </span><br><span class="line">        // 由于第一次的prevent是闭包产生的只要两个值的差大于给定的时间就执行方法 然后重新设定prev前一个时间 以此循环        </span><br><span class="line">　　　　if (now - prev &gt;= delay) &#123;                    </span><br><span class="line">　　　　　　func()                   </span><br><span class="line">　　　　　　prev = Date.now();                </span><br><span class="line">　　　　&#125;            </span><br><span class="line">　　&#125;        </span><br><span class="line">&#125;        </span><br><span class="line">function handle() &#123;            </span><br><span class="line">　　console.log(&apos;孤独月&apos;);        </span><br><span class="line">&#125;        </span><br><span class="line">window.addEventListener(&apos;scroll&apos;, throttle(handle, 1000));</span><br></pre></td></tr></table></figure>
-
-<h3 id="②定时器"><a href="#②定时器" class="headerlink" title="②定时器"></a>②定时器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const throttle = function(func, delay) &#123;            </span><br><span class="line">    let timer = null;            </span><br><span class="line">    return function() &#123;  </span><br><span class="line">        //!null =&gt; true 进入条件然后 延迟时间后执行方法 重新将timer赋为null                             </span><br><span class="line">        if (!timer) &#123;                    </span><br><span class="line">            timer = setTimeout(function() &#123;                 </span><br><span class="line">                func()                       </span><br><span class="line">                timer = null;                    </span><br><span class="line">            &#125;, delay);                </span><br><span class="line">        &#125;            </span><br><span class="line">    &#125;        </span><br><span class="line">&#125;        </span><br><span class="line">function handle() &#123;            </span><br><span class="line">    console.log(&apos;孤独月&apos;);        </span><br><span class="line">&#125;        </span><br><span class="line">window.addEventListener(&apos;scroll&apos;, throttle(handle, 1000));</span><br></pre></td></tr></table></figure>
-
-<p><img src="./1.gif" alt="alt 节流效果图" title="节流效果图"></p>
-<h3 id="首次就触发的节流"><a href="#首次就触发的节流" class="headerlink" title="首次就触发的节流"></a>首次就触发的节流</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 节流throttle代码（时间戳+定时器）：</span><br><span class="line">const throttle = function(func, delay) &#123;     </span><br><span class="line">    let timer = null;     </span><br><span class="line">    let startTime = Date.now();     </span><br><span class="line">    return function() &#123;             </span><br><span class="line">        const curTime = Date.now();             </span><br><span class="line">        const remaining = delay - (curTime - startTime); </span><br><span class="line">        clearTimeout(timer);              </span><br><span class="line">        if (remaining &lt;= 0) &#123;</span><br><span class="line">            console.log(1)                 </span><br><span class="line">            func()                    </span><br><span class="line">            startTime = Date.now();              </span><br><span class="line">        &#125; else &#123;       </span><br><span class="line">            console.log(2)                </span><br><span class="line">            timer = setTimeout(func, remaining);              </span><br><span class="line">        &#125;      </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">function handle() &#123;      </span><br><span class="line">    console.log(&apos;孤独月&apos;);</span><br><span class="line">&#125; </span><br><span class="line">window.addEventListener(&apos;scroll&apos;, throttle(handle, 1000));</span><br></pre></td></tr></table></figure>
-
-<p>首次执行的时候 变量remaining是大于0的所以会直接执行方法，当remaining小于0，也就是 curTime - startTime &gt;= 1000ms时就执行，<br>也就完成了节流<br><img src="./2.gif" alt="alt 首次运行的效果图" title="首次运行的效果图"></p>
+<h3 id="①时间戳"><a href="#①时间戳" class="headerlink" title="①时间戳"></a>①时间戳</h3><pre><code>const throttle = function(func, delay) {            
+　　let prev = Date.now();            
+　　return function() {                                
+　　　　const now = Date.now();  
+        // 由于第一次的prevent是闭包产生的只要两个值的差大于给定的时间就执行方法 然后重新设定prev前一个时间 以此循环        
+　　　　if (now - prev &gt;= delay) {                    
+　　　　　　func()                   
+　　　　　　prev = Date.now();                
+　　　　}            
+　　}        
+}        
+function handle() {            
+　　console.log(&#39;孤独月&#39;);        
+}        
+window.addEventListener(&#39;scroll&#39;, throttle(handle, 1000));</code></pre><h3 id="②定时器"><a href="#②定时器" class="headerlink" title="②定时器"></a>②定时器</h3><pre><code>const throttle = function(func, delay) {            
+    let timer = null;            
+    return function() {  
+        //!null =&gt; true 进入条件然后 延迟时间后执行方法 重新将timer赋为null                             
+        if (!timer) {                    
+            timer = setTimeout(function() {                 
+                func()                       
+                timer = null;                    
+            }, delay);                
+        }            
+    }        
+}        
+function handle() {            
+    console.log(&#39;孤独月&#39;);        
+}        
+window.addEventListener(&#39;scroll&#39;, throttle(handle, 1000));</code></pre><p><img src="./1.gif" alt="alt 节流效果图" title="节流效果图"></p>
+<h3 id="首次就触发的节流"><a href="#首次就触发的节流" class="headerlink" title="首次就触发的节流"></a>首次就触发的节流</h3><pre><code>// 节流throttle代码（时间戳+定时器）：
+const throttle = function(func, delay) {     
+    let timer = null;     
+    let startTime = Date.now();     
+    return function() {             
+        const curTime = Date.now();             
+        const remaining = delay - (curTime - startTime); 
+        clearTimeout(timer);              
+        if (remaining &lt;= 0) {
+            console.log(1)                 
+            func()                    
+            startTime = Date.now();              
+        } else {       
+            console.log(2)                
+            timer = setTimeout(func, remaining);              
+        }      
+    }
+}
+function handle() {      
+    console.log(&#39;孤独月&#39;);
+} 
+window.addEventListener(&#39;scroll&#39;, throttle(handle, 1000));
+</code></pre><p>首次执行的时候 变量remaining是大于0的所以会直接执行方法，当remaining小于0，也就是 curTime - startTime &gt;= 1000ms时就执行，<br>也就完成了节流<br><img src="./2.gif" alt="alt 首次运行的效果图" title="首次运行的效果图"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>函数防抖：将几次操作合并为一此操作进行。原理是维护一个计时器，规定在delay时间后触发函数，但是在delay时间内再次触发的话，就会取消之前的计时器而重新设置。这样一来，只有最后一次操作能被触发。</p>
 <p>函数节流：使得一定时间内只触发一次函数。原理是通过判断是否到达一定时间来触发函数。</p>
 <p>区别： 函数节流不管事件触发有多频繁，都会保证在规定时间内一定会执行一次真正的事件处理函数，而函数防抖只是在最后一次事件后才触发一次函数。 比如在页面的无限加载场景下，我们需要用户在滚动页面时，输入框搜索发生ajax请求下，每隔一段时间发一次 Ajax 请求，而不是在用户停下滚动页面操作时才去请求数据。这样的场景，就适合用节流技术来实现。</p>
@@ -124,6 +183,9 @@
 <script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/highlightjs/styles/androidstudio.css">
+<script src="/highlightjs/highlight.pack.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <link rel="stylesheet" href="/photoswipe/photoswipe.css">
 <link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
 <script src="/photoswipe/photoswipe.min.js"></script>
@@ -176,6 +238,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+  
 
 
 
