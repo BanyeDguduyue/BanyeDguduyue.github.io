@@ -134,11 +134,14 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <h3 id="人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。"><a href="#人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。" class="headerlink" title="人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。"></a>人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。</h3><div class="dplayer-box" data-url='https://cdn-user.veed.io/render/premium/4599ec47-4d2f-459a-9a7b-8f3cd8e8ce8d.mp4?filename=%25E5%2587%25A1%25E4%25BA%25BA-VEED.mp4' ></div>
+        <h3 id="人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。"><a href="#人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。" class="headerlink" title="人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。"></a>人生和梦不一样，每走一步都会有不一样的结果，即使是遗憾，那也是独一无二的。</h3><div class="aplayer-box" data-url='https://gb-sycdn.kuwo.cn/924c7c2ca53b39d1f1d8ae3745ff25e7/6717b817/resource/n3/80/21/1802587833.mp3' data-name='凡人' data-artist='段奥娟' data-cover='http://img3.kuwo.cn/star/starheads/500/8/38/2980078151.jpg' ></div>
 
 
-
-
+    <figure class="figure-image">
+      <img src="https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fp9.itc.cn%2Fimages01%2F20220529%2F5b4894c4afb443eca7486af889f34ca5.jpeg" alt="韩老魔" loading="lazy" />
+      <figcaption>韩老魔</figcaption>
+    </figure>
+  
       </section>
 
       
@@ -295,6 +298,35 @@
 
   
   
+<!-- aplayer -->
+
+  <!-- aplayer 音频 start -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  <script type="text/javascript">
+    const aplayer = document.querySelectorAll(".aplayer-box");
+    aplayer && initaplayer(aplayer);
+    function initaplayer(els) {
+      let elsArr = Array.from(els);
+      elsArr.forEach(el => {
+        let params = {
+          container: el,
+          audio: { ...el.dataset },
+          theme: "#b7daff",
+          autoplay: false,
+          loop: false,
+          mutex: true,
+        }
+        if (el.dataset.lrc) {
+          params['lrcType'] = 3
+        }
+        new APlayer(params);
+      });
+    }
+  </script>
+  <!-- aplayer 音频 end -->
+  
+
 
 
 <!-- dplayer -->
